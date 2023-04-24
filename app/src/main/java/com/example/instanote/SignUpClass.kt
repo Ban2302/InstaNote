@@ -1,5 +1,6 @@
 package com.example.instanote
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -13,6 +14,10 @@ class SignUpClass : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+
+        // Shared Preferences
+
+
 
 
 
@@ -74,6 +79,8 @@ class SignUpClass : AppCompatActivity(){
 btnSubmit.setOnClickListener{
     if(emptyChecker()){
         Toast.makeText(this,"Good", Toast.LENGTH_LONG).show()
+
+
     }
 }
 

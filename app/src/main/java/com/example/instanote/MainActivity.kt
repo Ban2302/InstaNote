@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
 
         btnLogIn.setOnClickListener{
+
           if(logInChecker()){
               val intent = Intent(this, MainPage::class.java)
               startActivity(intent)
