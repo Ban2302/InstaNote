@@ -1,5 +1,6 @@
 package com.example.instanote
 
+import FirebaseAuthClass
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,11 +10,16 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        auth = FirebaseAuth.getInstance()
 
 
 
@@ -28,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        fun logInChecker(): Boolean {
+        fun logInChecker(email: EditText, password: EditText, rbListenConfid: RadioButton, rbListenData: RadioButton): Boolean {
             val email = email.text.toString()
             val password = password.text.toString()
             val rbListenConfId = rbListenConfid.isChecked
@@ -52,14 +58,21 @@ class MainActivity : AppCompatActivity() {
 
 
         btnLogIn.setOnClickListener{
-
-          if(logInChecker()){
-              val intent = Intent(this, MainPage::class.java)
-              startActivity(intent)
-              finish()
-          }else{
-              errorMessage.text = "Email or Password field is empty. Please check the Conditions"
-          }
+            if(logInChecker(email,password, rbListenConfid, rbListenData)){
+                auth.signInWithEmailAndPassword(email.text.toString(),password.text.toString())
+                    .addOnCompleteListener(this) {
+                        task ->
+                        if (task.isSuccessful){
+                            val intent = Intent (this, MainPage :: class.java)
+                            startActivity(intent)
+                            finish()
+                        }else{
+                            errorMessage.text = "Invalid Email or Password"
+                        }
+                    }
+                }else{
+                    errorMessage.text = "email, Password or conditions are not fulfilled"
+            }
         }
 
 
